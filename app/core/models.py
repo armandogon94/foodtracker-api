@@ -22,16 +22,16 @@ class UserManager(BaseUserManager):
             raise ValueError('Users must have an email address')
         if not public_name:
             raise ValueError('Users must have a username')
-        user = self.model(public_name=public_name,
+        user = self.model(public_name=public_name.lower(),
                           email=self.normalize_email(email), **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
 
         return user
 
-    def create_superuser(self, public_name, email, password):
+    def create_superuser(self, email, password):
         """Creates and saves a new superuser"""
-        user = self.create_user(public_name, email, password)
+        user = self.create_user('superuser', email, password)
         user.is_staff = True
         user.is_superuser = True
         user.save(using=self._db)

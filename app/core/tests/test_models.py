@@ -13,8 +13,11 @@ def sample_user(public_name='name',
 
 
 class ModelTests(TestCase):
-    def test_create_user_with_email_successful(self):
-        """Test creating a new user with an email is successful"""
+    def test_create_user_with_email_username_successful(self):
+        """
+        Test creating a new user with an email
+        and public_name is successful
+        """
         public_name = 'nombre'
         email = 'hola@gmail.com'
         password = 'testpass123'
@@ -47,13 +50,25 @@ class ModelTests(TestCase):
             get_user_model().objects.create_user('name1', None, 'test123')
 
     def test_new_user_invalid_username(self):
-        """Test creating user with no email raises error"""
+        """Test creating user with no public_name raises error"""
         with self.assertRaises(ValueError):
             get_user_model().objects.create_user(
                 None,
                 'test@test.com',
                 'test123'
             )
+
+    def test_new_user_username_lowercase(self):
+        """Test the publi_user for a new user is lowercase"""
+        public_name = 'tESt1'
+        email = 'test@gmail.com'
+        user = get_user_model().objects.create_user(
+            public_name,
+            email,
+            'test123'
+        )
+
+        self.assertEqual(user.public_name, public_name.lower())
 
     def test_create_new_superuser(self):
         """Test creating a new superuser"""
