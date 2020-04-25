@@ -1,6 +1,5 @@
 from django.contrib.auth import get_user_model, authenticate
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.auth import get_user_model
 from django.utils import timezone
 from rest_framework import serializers
 
@@ -65,7 +64,7 @@ class AuthTokenSerializer(serializers.Serializer):
             msg = _('Unable to authenticate with provided credentials')
             raise serializers.ValidationError(msg, code='authorization')
 
-        #Updates last_login everytime a token is requested
+        # Updates last_login everytime a token is requested
         login = {'last_login': timezone.now()}
         serializer = UserSerializer(user)
         log_usr = serializer.update_login(user, login)

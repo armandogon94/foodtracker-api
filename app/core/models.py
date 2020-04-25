@@ -39,14 +39,6 @@ class UserManager(BaseUserManager):
 
         return user
 
-    def update_login(self, email=None):
-        if email:
-            user = self.get_by_natural_key(email)
-            #user.last_login = timezone.now
-            # user.save(using=self._db)
-            return user
-        return None
-
 
 class User(AbstractBaseUser, PermissionsMixin):
     """A custom user model that supports using email instead of username"""
