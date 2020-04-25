@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractBaseUser,\
     BaseUserManager, \
     PermissionsMixin
 from django.conf import settings
+from django.utils import timezone
 import uuid
 import os
 
@@ -38,6 +39,14 @@ class UserManager(BaseUserManager):
 
         return user
 
+    def update_login(self, email=None):
+        if email:
+            user = self.get_by_natural_key(email)
+            #user.last_login = timezone.now
+            # user.save(using=self._db)
+            return user
+        return None
+
 
 class User(AbstractBaseUser, PermissionsMixin):
     """A custom user model that supports using email instead of username"""
@@ -49,6 +58,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_foodtruck = models.BooleanField(default=False)
+    date_joined = models.DateTimeField(auto_now_add=True)
+    last_login = models.DateTimeField(default=timezone.now, editable=True)
 
     objects = UserManager()
 
